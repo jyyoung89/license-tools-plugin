@@ -82,6 +82,8 @@ class LicenseToolsPlugin implements Plugin<Project> {
             def notDocumented = dependencyLicenses.notListedIn(librariesYaml)
             LicenseToolsExtension ext = project.extensions.findByType(LicenseToolsExtension)
 
+            project.file(ext.outputTxt).append("OSS Name\tOSS Version\tLicense Name\tDownload Location\tHomepage")
+
             notDocumented.each { libraryInfo ->
                 def text = generateLibraryInfoTextWithVersion(libraryInfo)
                 project.file(ext.outputTxt).append("\n${text}")
@@ -237,7 +239,7 @@ class LicenseToolsPlugin implements Plugin<Project> {
         text.append("https://mvnrepository.com/artifact/${libraryInfo.artifactId.withSlash()}\t")
 
         if (libraryInfo.url) {
-            text.append("${libraryInfo.licenseUrl}\t") // Homepage Url
+            text.append("${libraryInfo.url}\t") // Homepage Url
         } else {
             text.append("Unknown\t")
         }
