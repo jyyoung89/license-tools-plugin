@@ -1,4 +1,4 @@
-package com.cookpad.android.licensetools;
+package com.jyyoung89.android.licensetools;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,7 +49,8 @@ public class DependencySet implements Iterable<LibraryInfo> {
     public DependencySet notListedIn(DependencySet dependencySet) {
         DependencySet notListed = new DependencySet();
         for (LibraryInfo libraryInfo : this) {
-            if (!dependencySet.contains(libraryInfo.getArtifactId()) && !libraryInfo.isSkip() && !libraryInfo.isForceGenerate()) {
+            if (!dependencySet.contains(libraryInfo.getArtifactId()) && !libraryInfo.isSkip() && !libraryInfo
+                    .isForceGenerate()) {
                 notListed.add(libraryInfo);
             }
         }

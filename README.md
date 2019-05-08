@@ -4,8 +4,7 @@ Gradle Plugin to check library licenses and generate license pages.
 
 * `./gradlew checkLicenses` to check licenses in dependencies
 * `./gradlew updateLicenses` to update library information file `licenses.yml`
-* `./gradlew generateLicensePage` to generate a license page `licenses.html`
-* `./gradlew generateLicenseJson` to generate a license json file `licenses.json`
+* `./gradlew generateLicenseTxt` to generate a license text file `licenses.txt`
 
 ## Setup
 
@@ -18,7 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.cookpad.android.licensetools:license-tools-plugin:1.7.0'
+        classpath 'com.jyyoung89.android.license:dependency-scanning-tool:0.1.0'
     }
 }
 

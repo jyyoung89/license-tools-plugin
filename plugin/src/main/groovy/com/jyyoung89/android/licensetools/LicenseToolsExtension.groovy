@@ -1,4 +1,4 @@
-package com.cookpad.android.licensetools
+package com.jyyoung89.android.licensetools
 
 public class LicenseToolsExtension {
 

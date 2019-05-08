@@ -1,4 +1,4 @@
-package com.cookpad.android.licensetools
+package com.jyyoung89.android.licensetools
 
 import groovy.json.JsonBuilder
 import groovy.util.slurpersupport.GPathResult
@@ -226,19 +226,21 @@ class LicenseToolsPlugin implements Plugin<Project> {
 
         text.append("${libraryInfo.name}\t") // OSS Name
 
-        if(libraryInfo.artifactId.version){
+        if (libraryInfo.artifactId.version) {
             text.append("${libraryInfo.artifactId.version}\t") // OSS Version
+        } else {
+            text.append("N/A\t")
         }
-        else { text.append("N/A\t") }
 
         text.append("${libraryInfo.license}\t") // License Name
 
         text.append("https://mvnrepository.com/artifact/${libraryInfo.artifactId.withSlash()}\t")
 
-        if(libraryInfo.url){
+        if (libraryInfo.url) {
             text.append("${libraryInfo.licenseUrl}\t") // Homepage Url
+        } else {
+            text.append("Unknown\t")
         }
-        else { text.append("Unknown\t") }
 
         return text.toString().trim()
     }
@@ -297,22 +299,22 @@ class LicenseToolsPlugin implements Plugin<Project> {
             libraries librariesArray.collect {
                 l ->
                     return [
-                        notice: l.notice,
-                        copyrightHolder: l.copyrightHolder,
-                        copyrightStatement: l.copyrightStatement,
-                        license: l.license,
-                        licenseUrl: l.licenseUrl,
-                        normalizedLicense: l.normalizedLicense,
-                        year: l.year,
-                        url: l.url,
-                        libraryName: l.libraryName,
-                        // I don't why artifactId won't serialize, and this is the only way
-                        // I've found -- vishna
-                        artifactId: [
-                                name: l.artifactId.name,
-                                group: l.artifactId.group,
-                                version: l.artifactId.version,
-                        ]
+                            notice            : l.notice,
+                            copyrightHolder   : l.copyrightHolder,
+                            copyrightStatement: l.copyrightStatement,
+                            license           : l.license,
+                            licenseUrl        : l.licenseUrl,
+                            normalizedLicense : l.normalizedLicense,
+                            year              : l.year,
+                            url               : l.url,
+                            libraryName       : l.libraryName,
+                            // I don't why artifactId won't serialize, and this is the only way
+                            // I've found -- vishna
+                            artifactId        : [
+                                    name   : l.artifactId.name,
+                                    group  : l.artifactId.group,
+                                    version: l.artifactId.version,
+                            ]
                     ]
             }
         }
@@ -322,7 +324,9 @@ class LicenseToolsPlugin implements Plugin<Project> {
     }
 
     static void assertEmptyLibraries(ArrayList<LibraryInfo> noLicenseLibraries) {
-        if (noLicenseLibraries.empty) return;
+        if (noLicenseLibraries.empty) {
+            return
+        };
         StringBuilder message = new StringBuilder();
         message.append("Not enough information for:\n")
         message.append("---\n")
