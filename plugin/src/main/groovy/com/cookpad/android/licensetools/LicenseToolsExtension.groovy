@@ -10,6 +10,8 @@ public class LicenseToolsExtension {
 
     public File outputJson = new File("licenses.json")
 
+    public File outputTxt = new File("licenses.txt")
+
     public Set<String> ignoredGroups = new HashSet<>()
 
     public Set<String> ignoredProjects = new HashSet<>()

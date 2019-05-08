@@ -39,6 +39,10 @@ public class ArtifactId implements Comparable<ArtifactId> {
         return group + ":" + name + ":+";
     }
 
+    public String withSlash() {
+        return group + "/" + name + "/" + version;
+    }
+
     @Override
     public String toString() {
         return group + ":" + name + ":" + version;

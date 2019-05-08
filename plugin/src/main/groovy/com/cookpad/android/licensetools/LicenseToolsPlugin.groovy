@@ -76,6 +76,18 @@ class LicenseToolsPlugin implements Plugin<Project> {
             }
         }
 
+        def generateLicenseTxt = project.task('generateLicenseTxt').doLast {
+            initialize_NoncheckExist(project)
+
+            def notDocumented = dependencyLicenses.notListedIn(librariesYaml)
+            LicenseToolsExtension ext = project.extensions.findByType(LicenseToolsExtension)
+
+            notDocumented.each { libraryInfo ->
+                def text = generateLibraryInfoTextWithVersion(libraryInfo)
+                project.file(ext.outputTxt).append("\n${text}")
+            }
+        }
+
         def generateLicensePage = project.task('generateLicensePage').doLast {
             initialize(project)
             generateLicensePage(project)
@@ -94,6 +106,11 @@ class LicenseToolsPlugin implements Plugin<Project> {
     void initialize(Project project) {
         LicenseToolsExtension ext = project.extensions.findByType(LicenseToolsExtension)
         loadLibrariesYaml(project.file(ext.licensesYaml))
+        loadDependencyLicenses(project, ext.ignoredGroups, ext.ignoredProjects)
+    }
+
+    void initialize_NoncheckExist(Project project) {
+        LicenseToolsExtension ext = project.extensions.findByType(LicenseToolsExtension)
         loadDependencyLicenses(project, ext.ignoredGroups, ext.ignoredProjects)
     }
 
@@ -204,11 +221,32 @@ class LicenseToolsPlugin implements Plugin<Project> {
         project.file("${assetsDir}/${ext.outputHtml}").write(Templates.wrapWithLayout(content))
     }
 
+    static String generateLibraryInfoTextWithVersion(LibraryInfo libraryInfo) {
+        def text = new StringBuffer()
+
+        text.append("${libraryInfo.name}\t") // OSS Name
+
+        if(libraryInfo.artifactId.version){
+            text.append("${libraryInfo.artifactId.version}\t") // OSS Version
+        }
+        else { text.append("N/A\t") }
+
+        text.append("${libraryInfo.license}\t") // License Name
+
+        text.append("https://mvnrepository.com/artifact/${libraryInfo.artifactId.withSlash()}\t")
+
+        if(libraryInfo.url){
+            text.append("${libraryInfo.licenseUrl}\t") // Homepage Url
+        }
+        else { text.append("Unknown\t") }
+
+        return text.toString().trim()
+    }
+
     static String generateLibraryInfoText(LibraryInfo libraryInfo) {
         def text = new StringBuffer()
-        text.append("- artifact: ${libraryInfo.artifactId.withWildcardVersion()}\n")
+        text.append("- artifact: ${libraryInfo.artifactId.toString()}\n")
         text.append("  name: ${libraryInfo.name ?: "#NAME#"}\n")
-        text.append("  copyrightHolder: ${libraryInfo.copyrightHolder ?: "#COPYRIGHT_HOLDER#"}\n")
         text.append("  license: ${libraryInfo.license ?: "#LICENSE#"}\n")
         if (libraryInfo.licenseUrl) {
             text.append("  licenseUrl: ${libraryInfo.licenseUrl ?: "#LICENSEURL#"}\n")
