@@ -196,8 +196,8 @@ Keep `CHANGES.md` up-to-date.
 
 ## Copyright and License
 
-Copyright (c) 2016 Cookpad Inc.
-
+Copyright (c) 2016 Cookpad Inc.</br>
+Copyright (c) 2019 jy.
 ```
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
